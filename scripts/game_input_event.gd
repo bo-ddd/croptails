@@ -11,6 +11,8 @@ static func movement_input() -> Vector2:
 		direction = Vector2.UP
 	elif Input.is_action_pressed('walk_down'):
 		direction = Vector2.DOWN	
+	else:
+		direction = Vector2.ZERO
 	return direction;
 	
 static func is_movement_input() -> bool:
