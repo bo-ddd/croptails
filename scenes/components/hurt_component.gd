@@ -6,7 +6,8 @@ extends Area2D
 signal hurt
 
 func _on_area_entered(area: Area2D) -> void:
+	print('hurt is enter')
 	var hit_component = area as HitComponent
-	
+	print(tool,'tool', hit_component.current_tool, 'current_tool')
 	if tool == hit_component.current_tool:
 		hurt.emit(hit_component.hit_damage)

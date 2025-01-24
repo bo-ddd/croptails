@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://bjaq7uwfo5lea"]
+
+[ext_resource type="Shader" path="res://scenes/objects/trees/tree_shake.gdshader" id="1_3paqw"]
+[ext_resource type="Texture2D" uid="uid://v78xybipjo05" path="res://assets/game/objects/basic_grass_biom_things.png" id="1_qd4b3"]
+[ext_resource type="Script" path="res://scenes/objects/trees/big_tree.gd" id="2_8swbv"]
+[ext_resource type="Script" path="res://scenes/components/hurt_component.gd" id="2_yhyuq"]
+[ext_resource type="Script" path="res://scenes/components/damage_component.gd" id="4_n7o60"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6xbd"]
+shader = ExtResource("1_3paqw")
+shader_parameter/shake_intensity = 0.0
+shader_parameter/shake_speed = 20.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_or2lf"]
+atlas = ExtResource("1_qd4b3")
+region = Rect2(16, 0, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fnsrc"]
+radius = 5.09902
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2707y"]
+size = Vector2(20, 23)
+
+[node name="BigTree" type="Sprite2D"]
+material = SubResource("ShaderMaterial_y6xbd")
+position = Vector2(0, -13)
+texture = SubResource("AtlasTexture_or2lf")
+script = ExtResource("2_8swbv")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 10)
+shape = SubResource("CircleShape2D_fnsrc")
+
+[node name="HurtComponent" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("2_yhyuq")
+
+[node name="HurtComponentCollisionShape2D" type="CollisionShape2D" parent="HurtComponent"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_2707y")
+debug_color = Color(0.891501, 0.299958, 0.324638, 0.42)
+
+[node name="DamageComponent" type="Node2D" parent="."]
+script = ExtResource("4_n7o60")
+max_damage = 3
+
+[connection signal="area_entered" from="HurtComponent" to="HurtComponent" method="_on_area_entered"]
